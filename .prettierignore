@@ -1,0 +1,15 @@
+.github
+.next
+coverage
+node_modules
+.nvmrc
+.prettierrc
+jest.config.js
+next.config.js
+src/styles/css
+public
+package.json
+package-lock.json
+tsconfig*.json
+dist
+build

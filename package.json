@@ -1,0 +1,61 @@
+{
+  "name": "amplify-authenticator-react-custom",
+  "version": "0.1.0",
+  "description": "A set of hooks and a component to easily implement completely custom auth components",
+  "main": "index.js",
+  "sideEffects": false,
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "lint": "eslint . --ext .ts --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "build": "rimraf dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "type-check": "tsc --noEmit",
+    "format": "prettier . --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkershner6/amplify-authenticator-react-custom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkershner6/amplify-authenticator-react-custom/issues"
+  },
+  "homepage": "https://github.com/dkershner6/amplify-authenticator-react-custom#readme",
+  "devDependencies": {
+    "@aws-amplify/auth": "^4.3.11",
+    "@aws-amplify/core": "^4.3.3",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^14.17.2",
+    "@types/react": "^17.0.31",
+    "@types/react-dom": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "amazon-cognito-identity-js": "^5.2.1",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-sonarjs": "^0.10.0",
+    "jest": "^27.3.1",
+    "prettier": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "react-script-hook": "^1.2.1",
+    "tiny-invariant": "^1.1.0"
+  },
+  "peerDependencies": {
+    "@aws-amplify/auth": "^4.3.11",
+    "@aws-amplify/core": "^4.3.3",
+    "amazon-cognito-identity-js": "^5.2.1",
+    "react": ">=17"
+  }
+}
