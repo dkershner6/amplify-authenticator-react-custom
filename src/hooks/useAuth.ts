@@ -15,7 +15,6 @@ import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface AuthProps {
     initialAuthRoute?: AuthRoute;
-    onStateChange?: (prevState: AuthState, newState: AuthState) => AuthState;
 }
 
 export const useAuth = (props: AuthProps): AuthDataContextOutput => {
@@ -24,10 +23,7 @@ export const useAuth = (props: AuthProps): AuthDataContextOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const {
-        initialAuthRoute: initialAuthState = AuthRoute.SignIn,
-        onStateChange,
-    } = props;
+    const { initialAuthRoute: initialAuthState = AuthRoute.SignIn } = props;
 
     const [state, setState] = useState<AuthState>({
         authRoute: initialAuthState,
@@ -41,16 +37,14 @@ export const useAuth = (props: AuthProps): AuthDataContextOutput => {
             }
 
             setState((prev) => {
-                const newState = onStateChange
-                    ? onStateChange(prev, { authRoute: authRoute, authData })
-                    : { authState: authRoute, authData };
+                const newState: AuthState = { authRoute, authData };
                 return {
                     ...prev,
                     ...newState,
                 };
             });
         },
-        [onStateChange]
+        []
     );
 
     useEffect(() => {
