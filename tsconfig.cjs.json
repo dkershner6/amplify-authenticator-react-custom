@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.esm.json",
+  "compilerOptions": {
+    "target": "es6",    
+    "outDir": "dist/cjs",    
+    "module": "commonjs" 
+  } ,
+  "exclude": ["node_modules", "dist", ".storybook", "**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"]
+}
