@@ -1,8 +1,12 @@
 {
   "name": "amplify-authenticator-react-custom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A set of hooks and a component to easily implement completely custom auth components",
-  "main": "index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "test": "jest --passWithNoTests",
