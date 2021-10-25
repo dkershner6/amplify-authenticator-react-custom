@@ -1,0 +1,31 @@
+name: PR to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ####################### Lint and Test ########################################
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.16.0"
+          registry-url: https://npm.pkg.github.com
+          scope: "@obfns"
+
+      - name: npm install and type-check
+        run: |
+          npm ci
+          npm run type-check
+
+      - name: lint
+        run: npm run lint
+
+      - name: test
+        run: npm run test

@@ -77,6 +77,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         const checkUser = async (): Promise<void> => {
             try {
                 const user = await Auth.currentAuthenticatedUser();
+                console.debug("user found", user);
                 dispatchAuthState({
                     authRoute: AuthRoute.SignedIn,
                     authData: user,
@@ -95,6 +96,8 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
             const { payload } = capsule;
 
             switch (payload.event) {
+                case "signIn":
+                case "refreshToken":
                 case "cognitoHostedUI":
                     return dispatchAuthState({
                         authRoute: AuthRoute.SignedIn,
@@ -119,7 +122,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         return (): void => {
             Hub.remove("auth", handleAuthCapsule);
         };
-    });
+    }, []);
 
     return (
         <AuthStateContext.Provider

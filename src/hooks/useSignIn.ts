@@ -41,7 +41,7 @@ export const useSignIn = (): ((
                 password,
                 validationData,
             });
-            console.debug(user);
+
             if (
                 user.challengeName === "SMS_MFA" ||
                 user.challengeName === "SOFTWARE_TOKEN_MFA"

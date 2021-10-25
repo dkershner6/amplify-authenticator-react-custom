@@ -27,7 +27,7 @@ export const useCheckContact = (): UseCheckContactOutput => {
 
         if (!isEmptyObject(data.verified)) {
             console.debug("checkContact success", authData);
-            dispatchAuthState({ authRoute: AuthRoute.SignIn, authData });
+            dispatchAuthState({ authRoute: AuthRoute.SignedIn, authData });
             return;
         }
 
