@@ -1,14 +1,11 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
-
-const logger = new Logger("useAmazonFederation");
 
 export interface GoogleFederationProps {
     clientId: string;
@@ -44,12 +41,12 @@ export const useGoogleFederation = (
     const { clientId, scriptSrc = "https://apis.google.com/js/platform.js" } =
         props;
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     const [loading, error] = useScript({
         src: scriptSrc,
         onload: () => {
-            logger.debug("init gapi");
+            console.debug("init gapi");
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const g = (window as any).gapi;
@@ -83,7 +80,10 @@ export const useGoogleFederation = (
 
         const authUser = await Auth.currentAuthenticatedUser();
 
-        handleStateChange(AuthRoute.SignedIn, authUser);
+        dispatchAuthState({
+            authRoute: AuthRoute.SignedIn,
+            authData: authUser,
+        });
     };
 
     const signIn = async (): Promise<void> => {
@@ -104,11 +104,11 @@ export const useGoogleFederation = (
                 : null;
 
         if (!googleAuth) {
-            logger.debug("google Auth undefined");
+            console.debug("google Auth undefined");
             return Promise.resolve();
         }
 
-        logger.debug("google signing out");
+        console.debug("google signing out");
         await googleAuth.signOut();
     };
 

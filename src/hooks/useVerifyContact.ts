@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseVerifyContactOutput {
@@ -13,8 +12,6 @@ export interface UseVerifyContactOutput {
     submit: (code: string) => Promise<void>;
 }
 
-const logger = new Logger("useVerifyContact");
-
 export const useVerifyContact = (): UseVerifyContactOutput => {
     invariant(
         (Auth && typeof Auth.verifyCurrentUserAttribute === "function") ||
@@ -22,16 +19,16 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange, authData } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData } = useContext(AuthStateContext);
     const [verifyAttr, setVerifyAttr] = useState<string | null>(null);
 
     const verify = async (contact: string): Promise<void> => {
         try {
             const data = await Auth.verifyCurrentUserAttribute(contact);
-            logger.debug(data);
+            console.debug(data);
             setVerifyAttr(contact);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -43,9 +40,9 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
 
         try {
             await Auth.verifyCurrentUserAttributeSubmit(verifyAttr, code);
-            handleStateChange(AuthRoute.SignedIn, authData);
+            dispatchAuthState({ authRoute: AuthRoute.SignedIn, authData });
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };

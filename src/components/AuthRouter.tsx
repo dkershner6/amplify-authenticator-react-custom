@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from "react";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 
 export interface AuthenticatorComponents {
     confirmSignIn?: ReactNode;
@@ -17,7 +17,7 @@ export const AuthRouter: React.FC<{ components: AuthenticatorComponents }> = ({
     children,
     components,
 }) => {
-    const { authRoute } = useContext(AuthDataContext);
+    const { authRoute } = useContext(AuthStateContext);
 
     switch (authRoute) {
         case AuthRoute.ConfirmSignIn:

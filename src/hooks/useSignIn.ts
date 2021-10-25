@@ -1,10 +1,9 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AmplifyError } from "../lib/AmplifyError";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
@@ -16,8 +15,6 @@ export type UseSignInOuput = (
     validationData?: Record<string, string> | undefined
 ) => Promise<void>;
 
-const logger = new Logger("useSignIn");
-
 export const useSignIn = (): ((
     username: string,
     password: string,
@@ -28,7 +25,7 @@ export const useSignIn = (): ((
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
     const checkContact = useCheckContact();
 
     return async (
@@ -44,34 +41,49 @@ export const useSignIn = (): ((
                 password,
                 validationData,
             });
-            logger.debug(user);
+            console.debug(user);
             if (
                 user.challengeName === "SMS_MFA" ||
                 user.challengeName === "SOFTWARE_TOKEN_MFA"
             ) {
-                logger.debug("confirm user with " + user.challengeName);
-                handleStateChange(AuthRoute.ConfirmSignIn, user);
+                console.debug("confirm user with " + user.challengeName);
+                dispatchAuthState({
+                    authRoute: AuthRoute.ConfirmSignIn,
+                    authData: user,
+                });
             } else if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
-                logger.debug("require new password", user.challengeParam);
-                handleStateChange(AuthRoute.RequireNewPassword, user);
+                console.debug("require new password", user.challengeParam);
+                dispatchAuthState({
+                    authRoute: AuthRoute.RequireNewPassword,
+                    authData: user,
+                });
             } else if (user.challengeName === "MFA_SETUP") {
-                logger.debug("TOTP setup", user.challengeParam);
-                handleStateChange(AuthRoute.TOTPSetup, user);
+                console.debug("TOTP setup", user.challengeParam);
+                dispatchAuthState({
+                    authRoute: AuthRoute.TOTPSetup,
+                    authData: user,
+                });
             } else {
                 checkContact(user);
             }
         } catch (error) {
             if ((error as AmplifyError)?.code === "UserNotConfirmedException") {
-                logger.debug("the user is not confirmed");
-                handleStateChange(AuthRoute.ConfirmSignUp, { username });
+                console.debug("the user is not confirmed");
+                dispatchAuthState({
+                    authRoute: AuthRoute.ConfirmSignUp,
+                    authData: { username },
+                });
             } else if (
                 (error as AmplifyError)?.code ===
                 "PasswordResetRequiredException"
             ) {
-                logger.debug("the user requires a new password");
-                handleStateChange(AuthRoute.ForgotPassword, { username });
+                console.debug("the user requires a new password");
+                dispatchAuthState({
+                    authRoute: AuthRoute.ForgotPassword,
+                    authData: { username },
+                });
             } else {
-                logger.error(error);
+                console.error(error);
                 throw error;
             }
         }

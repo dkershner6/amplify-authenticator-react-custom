@@ -1,18 +1,15 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseConfirmSignUpOutput {
     confirm: (code: string) => Promise<void>;
     resend: () => Promise<void>;
 }
-
-const logger = new Logger("useConfirmSignUp");
 
 export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
     invariant(
@@ -21,16 +18,19 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange, authData = {} } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData = {} } = useContext(AuthStateContext);
 
     const { username } = authData;
 
     const confirm = async (code: string): Promise<void> => {
         try {
             await Auth.confirmSignUp(username, code);
-            handleStateChange(AuthRoute.SignedUp, null);
+            dispatchAuthState({
+                authRoute: AuthRoute.SignedUp,
+                authData: null,
+            });
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -38,9 +38,9 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
     const resend = async (): Promise<void> => {
         try {
             await Auth.resendSignUp(username);
-            logger.debug("code resent");
+            console.debug("code resent");
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
