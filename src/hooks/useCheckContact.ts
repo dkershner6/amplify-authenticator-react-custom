@@ -26,9 +26,11 @@ export const useCheckContact = (): UseCheckContactOutput => {
         const data = await Auth.verifiedContact(authData);
 
         if (!isEmptyObject(data.verified)) {
+            console.debug("checkContact success", authData);
             handleStateChange(AuthRoute.SignedIn, authData);
         } else {
             const newUser = Object.assign(authData, data);
+            console.debug("contact must be verified", newUser);
             handleStateChange(AuthRoute.VerifyContact, newUser);
         }
     };
