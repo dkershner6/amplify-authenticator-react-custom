@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { AuthDataContext } from "..";
+import { AuthStateContext } from "..";
 
 export interface SignedInAuthData {
     username: string;
@@ -13,7 +13,7 @@ export interface SignedInAuthData {
 }
 
 export const useSignedInAuthData = (): SignedInAuthData => {
-    const { authData } = useContext(AuthDataContext);
+    const { authData } = useContext(AuthStateContext);
 
     return authData as SignedInAuthData;
 };

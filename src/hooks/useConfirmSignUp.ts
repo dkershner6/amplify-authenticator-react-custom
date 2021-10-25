@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseConfirmSignUpOutput {
@@ -18,7 +18,7 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { dispatchAuthState, authData = {} } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData = {} } = useContext(AuthStateContext);
 
     const { username } = authData;
 

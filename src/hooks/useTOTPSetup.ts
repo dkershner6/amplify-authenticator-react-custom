@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext } from "../context/AuthDataContext";
+import { AuthStateContext } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseTOTPSetupOutput {
@@ -22,7 +22,7 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
 
     const [code, setCode] = useState<string | null>(null);
 
-    const { authData } = useContext(AuthDataContext);
+    const { authData } = useContext(AuthStateContext);
 
     const verifyTotpToken = async (totpCode: string): Promise<void> => {
         try {

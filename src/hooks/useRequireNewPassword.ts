@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 import { useCheckContact } from "./useCheckContact";
@@ -18,7 +18,7 @@ export const useRequireNewPassword = (): ((
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { authData: user, dispatchAuthState } = useContext(AuthDataContext);
+    const { authData: user, dispatchAuthState } = useContext(AuthStateContext);
     const checkContact = useCheckContact();
 
     return async (password: string): Promise<void> => {

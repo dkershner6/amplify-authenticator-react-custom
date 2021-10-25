@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext } from "../context/AuthDataContext";
+import { AuthStateContext } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 import { useCheckContact } from "./useCheckContact";
@@ -19,7 +19,7 @@ export const useConfirmSignIn = (): UseConfirmSignInOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { authData } = useContext(AuthDataContext);
+    const { authData } = useContext(AuthStateContext);
     const checkContact = useCheckContact();
 
     const mfaType =

@@ -4,7 +4,7 @@ import { Auth } from "@aws-amplify/auth";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export type UseSignUpOutput = (
@@ -20,7 +20,7 @@ export const useSignUp = (): UseSignUpOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { dispatchAuthState } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     return async (
         username: string,

@@ -4,7 +4,7 @@ import { Auth } from "@aws-amplify/auth";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface GoogleFederationProps {
@@ -41,7 +41,7 @@ export const useGoogleFederation = (
     const { clientId, scriptSrc = "https://apis.google.com/js/platform.js" } =
         props;
 
-    const { dispatchAuthState } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     const [loading, error] = useScript({
         src: scriptSrc,

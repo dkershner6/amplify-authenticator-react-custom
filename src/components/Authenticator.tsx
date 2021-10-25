@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AuthDataProvider, AuthProps } from "../context/AuthDataContext";
+import { AuthStateProvider, AuthProps } from "../context/AuthStateContext";
 
 import { AuthenticatorComponents, AuthRouter } from "./AuthRouter";
 
@@ -13,8 +13,8 @@ export const Authenticator: React.FC<AuthenticatorProps> = (props) => {
     const { children, authProps, components } = props;
 
     return (
-        <AuthDataProvider {...authProps}>
+        <AuthStateProvider {...authProps}>
             <AuthRouter components={components}>{children}</AuthRouter>
-        </AuthDataProvider>
+        </AuthStateProvider>
     );
 };

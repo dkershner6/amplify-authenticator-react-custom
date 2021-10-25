@@ -1,11 +1,11 @@
 import { useContext } from "react";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 
 export type UseAuthRouteOutput = (authRoute: AuthRoute) => void;
 
 export const useAuthRoute = (): UseAuthRouteOutput => {
-    const { dispatchAuthState } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     return (authRoute: AuthRoute) => dispatchAuthState({ authRoute });
 };

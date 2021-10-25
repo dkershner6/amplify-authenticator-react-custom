@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseForgotPasswordOutput {
@@ -22,7 +22,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
     const [delivery, setDelivery] = useState(null);
     const [username, setUsername] = useState("");
 
-    const { dispatchAuthState } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     const submit = async (code: string, password: string): Promise<void> => {
         try {

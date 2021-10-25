@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
+import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseVerifyContactOutput {
@@ -19,7 +19,7 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { dispatchAuthState, authData } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData } = useContext(AuthStateContext);
     const [verifyAttr, setVerifyAttr] = useState<string | null>(null);
 
     const verify = async (contact: string): Promise<void> => {

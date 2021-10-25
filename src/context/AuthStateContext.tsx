@@ -28,7 +28,7 @@ export interface AuthState {
     authData?: AuthData;
 }
 
-export interface AuthDataContextOutput extends AuthState {
+export interface AuthStateContextOutput extends AuthState {
     dispatchAuthState: (authState: Partial<AuthState>) => void;
 }
 
@@ -39,9 +39,9 @@ function createNamedContext<T>(name: string, defaultValue: T): Context<T> {
     return context;
 }
 
-export const AuthDataContext = createNamedContext<AuthDataContextOutput>(
+export const AuthStateContext = createNamedContext<AuthStateContextOutput>(
     "Auth",
-    undefined as unknown as AuthDataContextOutput
+    undefined as unknown as AuthStateContextOutput
 );
 
 export interface AuthProps {
@@ -59,7 +59,7 @@ const reducer = (prev: AuthState, newState: Partial<AuthState>): AuthState => {
     };
 };
 
-export const AuthDataProvider: React.FC<AuthProps> = (props) => {
+export const AuthStateProvider: React.FC<AuthProps> = (props) => {
     invariant(
         Auth && typeof Auth.currentAuthenticatedUser === "function",
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
@@ -122,13 +122,13 @@ export const AuthDataProvider: React.FC<AuthProps> = (props) => {
     });
 
     return (
-        <AuthDataContext.Provider
+        <AuthStateContext.Provider
             value={{
                 ...authState,
                 dispatchAuthState,
             }}
         >
             {children}
-        </AuthDataContext.Provider>
+        </AuthStateContext.Provider>
     );
 };

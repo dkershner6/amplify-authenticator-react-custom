@@ -4,10 +4,10 @@ import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import {
-    AuthDataContext,
+    AuthStateContext,
     AuthData,
     AuthRoute,
-} from "../context/AuthDataContext";
+} from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 import { isEmptyObject } from "./utils";
@@ -15,7 +15,7 @@ import { isEmptyObject } from "./utils";
 export type UseCheckContactOutput = (authData: AuthData) => Promise<void>;
 
 export const useCheckContact = (): UseCheckContactOutput => {
-    const { dispatchAuthState } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthStateContext);
 
     return async (authData: AuthData): Promise<void> => {
         invariant(
