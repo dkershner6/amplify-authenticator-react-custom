@@ -67,30 +67,38 @@ export interface AuthTokenPayload {
     username: string;
 }
 
+export interface SignedInUserSession {
+    accessToken: {
+        jwtToken: string;
+        payload: AuthTokenPayload;
+        clockDrift: number;
+    };
+    idToken: {
+        jwtToken: string;
+        payload: AuthTokenPayload &
+            AuthDataAttributes & { "cognito:username": string };
+        clockDrift: number;
+    };
+    refreshToken: {
+        token: string;
+    };
+}
+
 export interface SignedInAuthData {
     username: string;
     attributes: AuthDataAttributes;
     authenticationFlowType: string;
-    signInUserSession: {
-        accessToken: {
-            jwtToken: string;
-            payload: AuthTokenPayload;
-            clockDrift: number;
-        };
-        idToken: {
-            jwtToken: string;
-            payload: AuthTokenPayload &
-                AuthDataAttributes & { "cognito:username": string };
-            clockDrift: number;
-        };
-        refreshToken: {
-            token: string;
-        };
-    };
+    signInUserSession: SignedInUserSession;
 }
 
-export const useSignedInAuthData = (): SignedInAuthData => {
+export interface UseSignedInAuthDataOutput extends SignedInUserSession {
+    authData: SignedInAuthData;
+}
+
+export const useSignedInAuthData = (): UseSignedInAuthDataOutput => {
     const { authData } = useContext(AuthStateContext);
 
-    return authData as SignedInAuthData;
+    const castAuthData = authData as SignedInAuthData;
+
+    return { authData: castAuthData, ...castAuthData?.signInUserSession };
 };
