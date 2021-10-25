@@ -20,7 +20,7 @@ export const useSignUp = (): UseSignUpOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
 
     return async (
         username: string,
@@ -50,8 +50,11 @@ export const useSignUp = (): UseSignUpOutput => {
 
         try {
             const data = await Auth.signUp(signupInfo);
-            handleStateChange(AuthRoute.ConfirmSignUp, {
-                username: data.user.getUsername(),
+            dispatchAuthState({
+                authRoute: AuthRoute.ConfirmSignUp,
+                authData: {
+                    username: data.user.getUsername(),
+                },
             });
         } catch (error) {
             console.error(error);

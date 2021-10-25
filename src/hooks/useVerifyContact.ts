@@ -19,7 +19,7 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange, authData } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData } = useContext(AuthDataContext);
     const [verifyAttr, setVerifyAttr] = useState<string | null>(null);
 
     const verify = async (contact: string): Promise<void> => {
@@ -40,7 +40,7 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
 
         try {
             await Auth.verifyCurrentUserAttributeSubmit(verifyAttr, code);
-            handleStateChange(AuthRoute.SignedIn, authData);
+            dispatchAuthState({ authRoute: AuthRoute.SignedIn, authData });
         } catch (error) {
             console.error(error);
             throw error;

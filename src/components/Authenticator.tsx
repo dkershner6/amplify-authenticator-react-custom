@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
-import { AuthDataContext } from "../context/AuthDataContext";
-import { AuthProps, useAuth } from "../hooks/useAuth";
+import { AuthDataProvider, AuthProps } from "../context/AuthDataContext";
 
 import { AuthenticatorComponents, AuthRouter } from "./AuthRouter";
 
@@ -13,11 +12,9 @@ export interface AuthenticatorProps {
 export const Authenticator: React.FC<AuthenticatorProps> = (props) => {
     const { children, authProps, components } = props;
 
-    const authContextProviderProps = useAuth(authProps ?? {});
-
     return (
-        <AuthDataContext.Provider value={authContextProviderProps}>
+        <AuthDataProvider {...authProps}>
             <AuthRouter components={components}>{children}</AuthRouter>
-        </AuthDataContext.Provider>
+        </AuthDataProvider>
     );
 };

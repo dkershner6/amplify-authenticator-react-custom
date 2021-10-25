@@ -15,7 +15,7 @@ import { isEmptyObject } from "./utils";
 export type UseCheckContactOutput = (authData: AuthData) => Promise<void>;
 
 export const useCheckContact = (): UseCheckContactOutput => {
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
 
     return async (authData: AuthData): Promise<void> => {
         invariant(
@@ -27,11 +27,15 @@ export const useCheckContact = (): UseCheckContactOutput => {
 
         if (!isEmptyObject(data.verified)) {
             console.debug("checkContact success", authData);
-            handleStateChange(AuthRoute.SignedIn, authData);
-        } else {
-            const newUser = Object.assign(authData, data);
-            console.debug("contact must be verified", newUser);
-            handleStateChange(AuthRoute.VerifyContact, newUser);
+            dispatchAuthState({ authRoute: AuthRoute.SignIn, authData });
+            return;
         }
+
+        const newUser = Object.assign(authData, data);
+        console.debug("contact must be verified", newUser);
+        dispatchAuthState({
+            authRoute: AuthRoute.VerifyContact,
+            authData: newUser,
+        });
     };
 };

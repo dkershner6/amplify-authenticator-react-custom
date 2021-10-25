@@ -41,7 +41,7 @@ export const useGoogleFederation = (
     const { clientId, scriptSrc = "https://apis.google.com/js/platform.js" } =
         props;
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
 
     const [loading, error] = useScript({
         src: scriptSrc,
@@ -80,7 +80,10 @@ export const useGoogleFederation = (
 
         const authUser = await Auth.currentAuthenticatedUser();
 
-        handleStateChange(AuthRoute.SignedIn, authUser);
+        dispatchAuthState({
+            authRoute: AuthRoute.SignedIn,
+            authData: authUser,
+        });
     };
 
     const signIn = async (): Promise<void> => {

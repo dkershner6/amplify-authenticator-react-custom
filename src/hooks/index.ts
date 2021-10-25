@@ -1,5 +1,4 @@
 export * from "./useAmazonFederation";
-export * from "./useAuth";
 export * from "./useAuthRoute";
 export * from "./useCheckContact";
 export * from "./useConfirmSignIn";

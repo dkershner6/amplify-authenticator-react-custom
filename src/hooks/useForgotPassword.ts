@@ -22,12 +22,12 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
     const [delivery, setDelivery] = useState(null);
     const [username, setUsername] = useState("");
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
 
     const submit = async (code: string, password: string): Promise<void> => {
         try {
             await Auth.forgotPasswordSubmit(username, code, password);
-            handleStateChange(AuthRoute.SignIn, null);
+            dispatchAuthState({ authRoute: AuthRoute.SignIn, authData: null });
         } catch (error) {
             console.error(error);
             throw error;

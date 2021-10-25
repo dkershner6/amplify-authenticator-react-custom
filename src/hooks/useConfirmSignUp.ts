@@ -18,14 +18,17 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange, authData = {} } = useContext(AuthDataContext);
+    const { dispatchAuthState, authData = {} } = useContext(AuthDataContext);
 
     const { username } = authData;
 
     const confirm = async (code: string): Promise<void> => {
         try {
             await Auth.confirmSignUp(username, code);
-            handleStateChange(AuthRoute.SignedUp, null);
+            dispatchAuthState({
+                authRoute: AuthRoute.SignedUp,
+                authData: null,
+            });
         } catch (error) {
             console.error(error);
             throw error;

@@ -18,7 +18,7 @@ export const useRequireNewPassword = (): ((
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { authData: user, handleStateChange } = useContext(AuthDataContext);
+    const { authData: user, dispatchAuthState } = useContext(AuthDataContext);
     const checkContact = useCheckContact();
 
     return async (password: string): Promise<void> => {
@@ -32,10 +32,16 @@ export const useRequireNewPassword = (): ((
             console.debug("complete new password", updatedUser);
 
             if (updatedUser.challengeName === "SMS_MFA") {
-                handleStateChange(AuthRoute.ConfirmSignIn, updatedUser);
+                dispatchAuthState({
+                    authRoute: AuthRoute.ConfirmSignIn,
+                    authData: updatedUser,
+                });
             } else if (updatedUser.challengeName === "MFA_SETUP") {
                 console.debug("TOTP setup", updatedUser.challengeParam);
-                handleStateChange(AuthRoute.TOTPSetup, updatedUser);
+                dispatchAuthState({
+                    authRoute: AuthRoute.TOTPSetup,
+                    authData: updatedUser,
+                });
             } else {
                 checkContact(updatedUser);
             }

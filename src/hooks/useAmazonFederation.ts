@@ -43,7 +43,7 @@ export const useAmazonFederation = (
     const { clientId, scriptSrc = "https://api-cdn.amazon.com/sdk/login1.js" } =
         props;
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
 
     const [loading, error] = useScript({
         src: scriptSrc,
@@ -85,7 +85,10 @@ export const useAmazonFederation = (
             );
             const authUser = await Auth.currentAuthenticatedUser();
 
-            handleStateChange(AuthRoute.SignedIn, authUser);
+            dispatchAuthState({
+                authRoute: AuthRoute.SignedIn,
+                authData: authUser,
+            });
         });
     };
 

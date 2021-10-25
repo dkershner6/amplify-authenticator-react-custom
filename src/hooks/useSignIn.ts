@@ -25,7 +25,7 @@ export const useSignIn = (): ((
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { handleStateChange } = useContext(AuthDataContext);
+    const { dispatchAuthState } = useContext(AuthDataContext);
     const checkContact = useCheckContact();
 
     return async (
@@ -47,26 +47,41 @@ export const useSignIn = (): ((
                 user.challengeName === "SOFTWARE_TOKEN_MFA"
             ) {
                 console.debug("confirm user with " + user.challengeName);
-                handleStateChange(AuthRoute.ConfirmSignIn, user);
+                dispatchAuthState({
+                    authRoute: AuthRoute.ConfirmSignIn,
+                    authData: user,
+                });
             } else if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
                 console.debug("require new password", user.challengeParam);
-                handleStateChange(AuthRoute.RequireNewPassword, user);
+                dispatchAuthState({
+                    authRoute: AuthRoute.RequireNewPassword,
+                    authData: user,
+                });
             } else if (user.challengeName === "MFA_SETUP") {
                 console.debug("TOTP setup", user.challengeParam);
-                handleStateChange(AuthRoute.TOTPSetup, user);
+                dispatchAuthState({
+                    authRoute: AuthRoute.TOTPSetup,
+                    authData: user,
+                });
             } else {
                 checkContact(user);
             }
         } catch (error) {
             if ((error as AmplifyError)?.code === "UserNotConfirmedException") {
                 console.debug("the user is not confirmed");
-                handleStateChange(AuthRoute.ConfirmSignUp, { username });
+                dispatchAuthState({
+                    authRoute: AuthRoute.ConfirmSignUp,
+                    authData: { username },
+                });
             } else if (
                 (error as AmplifyError)?.code ===
                 "PasswordResetRequiredException"
             ) {
                 console.debug("the user requires a new password");
-                handleStateChange(AuthRoute.ForgotPassword, { username });
+                dispatchAuthState({
+                    authRoute: AuthRoute.ForgotPassword,
+                    authData: { username },
+                });
             } else {
                 console.error(error);
                 throw error;
