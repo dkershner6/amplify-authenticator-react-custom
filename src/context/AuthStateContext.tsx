@@ -5,7 +5,6 @@ import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "..";
-import { useAutoRefreshToken } from "../hooks/useAutoRefreshToken";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AuthData = any;
@@ -47,8 +46,6 @@ export const AuthStateContext = createNamedContext<AuthStateContextOutput>(
 
 export interface AuthProps {
     initialAuthRoute?: AuthRoute;
-    /** Set to -1 to disable */
-    timeBeforeExpiryToResetInMs?: number;
 }
 
 const reducer = (prev: AuthState, newState: Partial<AuthState>): AuthState => {
@@ -68,11 +65,8 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const {
-        initialAuthRoute: initialAuthState = AuthRoute.SignIn,
-        children,
-        timeBeforeExpiryToResetInMs,
-    } = props;
+    const { initialAuthRoute: initialAuthState = AuthRoute.SignIn, children } =
+        props;
 
     const [authState, dispatchAuthState] = useReducer(reducer, {
         authRoute: initialAuthState,
@@ -129,8 +123,6 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
             Hub.remove("auth", handleAuthCapsule);
         };
     }, []);
-
-    useAutoRefreshToken({ timeBeforeExpiryToResetInMs });
 
     return (
         <AuthStateContext.Provider
