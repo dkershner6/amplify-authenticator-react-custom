@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
+import { Hub } from "@aws-amplify/core";
 import { render, waitFor } from "@testing-library/react";
 import { mocked } from "ts-jest/utils";
 
@@ -47,6 +48,28 @@ describe("AuthStateContext", () => {
 
         await waitFor(() => {
             expect(getByText(AuthRoute.SignedIn)).toBeInTheDocument();
+        });
+    });
+
+    it("Should setup a listener on Hub", async () => {
+        const hubListenerSpy = jest.spyOn(Hub, "listen");
+        const hubRemoveSpy = jest.spyOn(Hub, "remove");
+        render(
+            <AuthStateProvider>
+                <TestComponent />
+            </AuthStateProvider>
+        );
+
+        await waitFor(() => {
+            expect(hubListenerSpy).toHaveBeenCalledWith(
+                "auth",
+                expect.anything()
+            );
+        });
+
+        await waitFor(() => {
+            expect(hubListenerSpy).not.toHaveBeenCalledTimes(2);
+            expect(hubRemoveSpy).not.toHaveBeenCalled();
         });
     });
 });
