@@ -1,7 +1,6 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
@@ -11,8 +10,6 @@ export interface UseConfirmSignUpOutput {
     confirm: (code: string) => Promise<void>;
     resend: () => Promise<void>;
 }
-
-const logger = new Logger("useConfirmSignUp");
 
 export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
     invariant(
@@ -30,7 +27,7 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
             await Auth.confirmSignUp(username, code);
             handleStateChange(AuthRoute.SignedUp, null);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -38,9 +35,9 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
     const resend = async (): Promise<void> => {
         try {
             await Auth.resendSignUp(username);
-            logger.debug("code resent");
+            console.debug("code resent");
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };

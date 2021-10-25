@@ -1,7 +1,6 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import invariant from "tiny-invariant";
 
@@ -14,8 +13,6 @@ export type UseSignUpOutput = (
     validationData?: Record<string, string>,
     attributes?: Record<string, string>
 ) => Promise<void>;
-
-const logger = new Logger("useSignUp");
 
 export const useSignUp = (): UseSignUpOutput => {
     invariant(
@@ -57,7 +54,7 @@ export const useSignUp = (): UseSignUpOutput => {
                 username: data.user.getUsername(),
             });
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };

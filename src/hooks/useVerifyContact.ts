@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
@@ -12,8 +11,6 @@ export interface UseVerifyContactOutput {
     verify: (contact: string) => Promise<void>;
     submit: (code: string) => Promise<void>;
 }
-
-const logger = new Logger("useVerifyContact");
 
 export const useVerifyContact = (): UseVerifyContactOutput => {
     invariant(
@@ -28,10 +25,10 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
     const verify = async (contact: string): Promise<void> => {
         try {
             const data = await Auth.verifyCurrentUserAttribute(contact);
-            logger.debug(data);
+            console.debug(data);
             setVerifyAttr(contact);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -45,7 +42,7 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
             await Auth.verifyCurrentUserAttributeSubmit(verifyAttr, code);
             handleStateChange(AuthRoute.SignedIn, authData);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };

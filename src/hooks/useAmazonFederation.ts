@@ -1,14 +1,11 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
-
-const logger = new Logger("useAmazonFederation");
 
 export interface AmazonFederationProps {
     clientId: string;
@@ -51,7 +48,7 @@ export const useAmazonFederation = (
     const [loading, error] = useScript({
         src: scriptSrc,
         onload: () => {
-            logger.debug("init amazon");
+            console.debug("init amazon");
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const amz = (window as any).amazon;
             amz.Login.setClientId(clientId);
@@ -72,7 +69,7 @@ export const useAmazonFederation = (
 
         amz.Login.retrieveProfile(async (userInfo: UserInfo) => {
             if (!userInfo.success) {
-                logger.debug("Get user Info failed");
+                console.debug("Get user Info failed");
                 return;
             }
 
@@ -99,7 +96,7 @@ export const useAmazonFederation = (
 
         amz.Login.authorize(options, async (response: AuthorizeResponse) => {
             if (response.error) {
-                logger.debug("Failed to login with amazon: " + response.error);
+                console.debug("Failed to login with amazon: " + response.error);
                 return;
             }
 
@@ -112,11 +109,11 @@ export const useAmazonFederation = (
         const amz = (window as any).amazon;
 
         if (!amz) {
-            logger.debug("Amazon Login sdk undefined");
+            console.debug("Amazon Login sdk undefined");
             return;
         }
 
-        logger.debug("Amazon signing out");
+        console.debug("Amazon signing out");
         amz.Login.logout();
     };
 

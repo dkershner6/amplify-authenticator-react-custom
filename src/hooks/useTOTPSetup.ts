@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext } from "../context/AuthDataContext";
@@ -11,8 +10,6 @@ export interface UseTOTPSetupOutput {
     code: string | null;
     verifyTotpToken: (totpCode: string) => Promise<void>;
 }
-
-const logger = new Logger("useTOTPSetup");
 
 export const useTOTPSetup = (): UseTOTPSetupOutput => {
     invariant(
@@ -32,7 +29,7 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
             await Auth.verifyTotpToken(authData, totpCode);
             Auth.setPreferredMFA(authData, "TOTP");
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -40,7 +37,7 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
     useEffect(() => {
         const setup = async (): Promise<void> => {
             const data = await Auth.setupTOTP(authData);
-            logger.debug("secret key", data);
+            console.debug("secret key", data);
 
             setCode(
                 `otpauth://totp/AWSCognito:${authData.username}?secret=${data}&issuer=AWSCognito`

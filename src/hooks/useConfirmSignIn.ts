@@ -1,7 +1,6 @@
 import { useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext } from "../context/AuthDataContext";
@@ -13,8 +12,6 @@ export interface UseConfirmSignInOutput {
     confirm: (code: string) => Promise<void>;
     mfaType: string;
 }
-
-const logger = new Logger("useConfirmSignIn");
 
 export const useConfirmSignIn = (): UseConfirmSignInOutput => {
     invariant(
@@ -39,7 +36,7 @@ export const useConfirmSignIn = (): UseConfirmSignInOutput => {
             );
             checkContact(authData);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };

@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 
 import { Auth } from "@aws-amplify/auth";
-import { ConsoleLogger as Logger } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AuthDataContext, AuthRoute } from "../context/AuthDataContext";
@@ -13,8 +12,6 @@ export interface UseForgotPasswordOutput {
     submit: (code: string, password: string) => Promise<void>;
     send: (usernameValue: string) => Promise<void>;
 }
-
-const logger = new Logger("useForgotPassword");
 
 export const useForgotPassword = (): UseForgotPasswordOutput => {
     invariant(
@@ -32,7 +29,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
             await Auth.forgotPasswordSubmit(username, code, password);
             handleStateChange(AuthRoute.SignIn, null);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
@@ -43,7 +40,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
             setDelivery(data.CodeDeliveryDetails);
             setUsername(usernameValue);
         } catch (error) {
-            logger.error(error);
+            console.error(error);
             throw error;
         }
     };
