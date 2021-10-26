@@ -1,6 +1,6 @@
 {
   "name": "amplify-authenticator-react-custom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A set of hooks and a component to easily implement completely custom auth components",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -10,6 +10,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest --passWithNoTests",
+    "test:coverage": "npm run test -- --coverage",
     "lint": "eslint . --ext .ts --max-warnings 0",
     "lint:fix": "eslint . --ext .ts --fix",
     "build": "rimraf dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",

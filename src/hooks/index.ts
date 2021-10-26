@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export * from "./useAmazonFederation";
 export * from "./useAutoRefreshToken";
 export * from "./useAuthRoute";
