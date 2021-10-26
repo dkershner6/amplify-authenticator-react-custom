@@ -2,8 +2,8 @@ import { Auth } from "@aws-amplify/auth";
 import { renderHook } from "@testing-library/react-hooks";
 import { mocked } from "ts-jest/utils";
 
-import { AuthRoute, useCheckContact } from "..";
-import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
+import { useCheckContact } from "..";
+import TestWrapper from "../test/TestWrapper";
 
 import { useSignIn } from "./useSignIn";
 
