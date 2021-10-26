@@ -14,10 +14,13 @@ describe("useRequireNewPassword", () => {
     const completeNewPasswordResponse = {
         challengeName: "default",
     };
+    const checkContact = jest.fn();
+
     beforeAll(() => {
         mocked(Auth.completeNewPassword).mockResolvedValue(
             completeNewPasswordResponse
         );
+        mocked(useCheckContact).mockReturnValue(checkContact);
     });
 
     afterEach(() => {
@@ -45,9 +48,6 @@ describe("useRequireNewPassword", () => {
     });
 
     it("Should call checkContact with correct params", async () => {
-        const checkContact = jest.fn();
-        mocked(useCheckContact).mockReturnValue(checkContact);
-
         const { result, waitFor } = renderHook(useRequireNewPassword, {
             wrapper: TestWrapper,
             initialProps: { authData: testAuthData },
