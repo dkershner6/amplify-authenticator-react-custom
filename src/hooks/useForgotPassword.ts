@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
@@ -7,8 +7,7 @@ import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 export interface UseForgotPasswordOutput {
-    username: string;
-    delivery: null;
+    username: string | null;
     submit: (code: string, password: string) => Promise<void>;
     send: (usernameValue: string) => Promise<void>;
 }
@@ -19,12 +18,18 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
             typeof Auth.forgotPasswordSubmit === "function",
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
-    const [delivery, setDelivery] = useState(null);
-    const [username, setUsername] = useState("");
+
+    const [username, setUsername] = useState<string | null>(null);
 
     const { dispatchAuthState } = useContext(AuthStateContext);
 
     const submit = async (code: string, password: string): Promise<void> => {
+        if (!username) {
+            throw new Error(
+                "username must be populated before submitting a forgotten password code"
+            );
+        }
+
         try {
             await Auth.forgotPasswordSubmit(username, code, password);
             dispatchAuthState({ authRoute: AuthRoute.SignIn, authData: null });
@@ -36,8 +41,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
 
     const send = async (usernameValue: string): Promise<void> => {
         try {
-            const data = await Auth.forgotPassword(usernameValue);
-            setDelivery(data.CodeDeliveryDetails);
+            await Auth.forgotPassword(usernameValue);
             setUsername(usernameValue);
         } catch (error) {
             console.error(error);
@@ -47,7 +51,6 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
 
     return {
         username,
-        delivery,
         submit,
         send,
     };
