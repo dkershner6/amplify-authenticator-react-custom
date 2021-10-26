@@ -8,6 +8,7 @@ export * from "./useConfirmSignIn";
 export * from "./useConfirmSignUp";
 export * from "./useForgotPassword";
 export * from "./useGoogleFederation";
+export * from "./useRefreshToken";
 export * from "./useRequireNewPassword";
 export * from "./useSignIn";
 export * from "./useSignedInAuthData";
