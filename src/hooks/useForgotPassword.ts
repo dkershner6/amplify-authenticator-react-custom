@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
