@@ -12,6 +12,11 @@ jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");
 
 describe("useConfirmSignIn", () => {
+    const checkContact = jest.fn();
+    beforeAll(() => {
+        mocked(useCheckContact).mockReturnValue(checkContact);
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -37,9 +42,6 @@ describe("useConfirmSignIn", () => {
     });
 
     it("Should call checkContact with correct params", async () => {
-        const checkContact = jest.fn();
-        mocked(useCheckContact).mockReturnValue(checkContact);
-
         const { result, waitFor } = renderHook(useConfirmSignIn, {
             wrapper: TestWrapper,
             initialProps: { authData: testAuthData },
