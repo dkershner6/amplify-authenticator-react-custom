@@ -4,13 +4,16 @@ import { AuthRoute, AuthStateContext } from "../context/AuthStateContext";
 
 export const dispatchAuthState = jest.fn();
 
-const TestWrapper: React.FC<{ authRoute?: AuthRoute }> = ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const TestWrapper: React.FC<{ authRoute?: AuthRoute; authData?: any }> = ({
+    authData,
     authRoute,
     children,
 }) => {
     return (
         <AuthStateContext.Provider
             value={{
+                authData,
                 authRoute: authRoute ?? AuthRoute.SignIn,
                 dispatchAuthState,
             }}

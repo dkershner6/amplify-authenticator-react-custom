@@ -5,7 +5,7 @@ import { mocked } from "ts-jest/utils";
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
 
-import { useCheckContact } from ".";
+import { useCheckContact } from "./useCheckContact";
 
 jest.mock("@aws-amplify/auth");
 
