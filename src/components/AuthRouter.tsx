@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import React, { ReactNode, useContext } from "react";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
