@@ -1,16 +1,11 @@
-import React, {
-    Context,
-    createContext,
-    useEffect,
-    useLayoutEffect,
-    useReducer,
-} from "react";
+import React, { Context, createContext, useEffect, useReducer } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "..";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AuthData = any;
@@ -78,7 +73,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         authData: null,
     });
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         const checkUser = async (): Promise<void> => {
             try {
                 const user = await Auth.currentAuthenticatedUser();
