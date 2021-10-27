@@ -1,4 +1,10 @@
-import React, { Context, createContext, useEffect, useReducer } from "react";
+import React, {
+    Context,
+    createContext,
+    useEffect,
+    useLayoutEffect,
+    useReducer,
+} from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { HubCapsule, Hub } from "@aws-amplify/core";
@@ -65,15 +71,14 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const { initialAuthRoute: initialAuthState = AuthRoute.SignIn, children } =
-        props;
+    const { initialAuthRoute = AuthRoute.SignIn, children } = props;
 
     const [authState, dispatchAuthState] = useReducer(reducer, {
-        authRoute: initialAuthState,
+        authRoute: initialAuthRoute,
         authData: null,
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const checkUser = async (): Promise<void> => {
             try {
                 const user = await Auth.currentAuthenticatedUser();
@@ -84,12 +89,12 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
                 });
             } catch (error) {
                 dispatchAuthState({
-                    authRoute: initialAuthState,
+                    authRoute: initialAuthRoute,
                 });
             }
         };
         checkUser();
-    }, [initialAuthState]);
+    }, []);
 
     useEffect(() => {
         const handleAuthCapsule = (capsule: HubCapsule): void => {
