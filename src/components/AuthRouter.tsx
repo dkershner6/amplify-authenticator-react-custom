@@ -43,5 +43,7 @@ export const AuthRouter: React.FC<{ components: AuthenticatorComponents }> = ({
             return <>{components.totpSetup}</>;
         case AuthRoute.VerifyContact:
             return <>{components.verifyContact}</>;
+        case AuthRoute.Loading:
+            return null;
     }
 };
