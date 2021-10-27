@@ -32,7 +32,7 @@ export const useRefreshToken = (): UseRefreshTokenOutput => {
                     );
                 })
                 .catch((e) => {
-                    console.log("Auth - Unable to refresh Token", e);
+                    console.error("Auth - Unable to refresh Token", e);
                     resolve(null);
                 });
         });
