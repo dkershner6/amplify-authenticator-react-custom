@@ -14,6 +14,7 @@ export enum AuthRoute {
     ConfirmSignIn = "confirmSignIn",
     ConfirmSignUp = "confirmSignUp",
     ForgotPassword = "forgotPassword",
+    Loading = "loading",
     RequireNewPassword = "requireNewPassword",
     SignIn = "signIn",
     SignUp = "signUp",
@@ -69,7 +70,8 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
     const { initialAuthRoute = AuthRoute.SignIn, children } = props;
 
     const [authState, dispatchAuthState] = useReducer(reducer, {
-        authRoute: initialAuthRoute,
+        // Loading displays nothing, this prevents screen flicker on SSR apps
+        authRoute: AuthRoute.Loading,
         authData: null,
     });
 
