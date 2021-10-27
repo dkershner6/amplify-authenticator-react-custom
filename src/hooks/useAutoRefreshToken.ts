@@ -20,34 +20,36 @@ export const useAutoRefreshToken = (
     useEffect(() => {
         if (
             typeof window !== "undefined" &&
-            timeBeforeExpiryToResetInMs !== -1
+            timeBeforeExpiryToResetInMs > 0 &&
+            accessToken?.payload?.exp
         ) {
-            let refreshTokenTimer: number;
-            if (accessToken?.payload?.exp) {
-                const expiresAtInEpochMs = accessToken.payload.exp * 1000;
-                const nowInEpochMs = Date.now();
+            const expiresAtInEpochMs = accessToken.payload.exp * 1000;
+            const nowInEpochMs = Date.now();
 
-                const msUntilRefreshTime =
-                    expiresAtInEpochMs -
-                    timeBeforeExpiryToResetInMs -
-                    nowInEpochMs;
+            const msUntilRefreshTime = Math.max(
+                expiresAtInEpochMs - timeBeforeExpiryToResetInMs - nowInEpochMs,
+                0
+            );
 
+            if (msUntilRefreshTime > 0) {
                 console.debug(
                     `Auth - Setting timer to refresh token in ${
-                        msUntilRefreshTime / 1000 / 60
+                        Math.round((msUntilRefreshTime / 1000 / 60) * 100) / 100
                     } minutes`
                 );
-                refreshTokenTimer = window.setTimeout(
+                const refreshTokenTimer = window.setTimeout(
                     () => refreshTokenManually(),
                     msUntilRefreshTime
                 );
+
+                return () => {
+                    if (refreshTokenTimer) {
+                        window.clearTimeout(refreshTokenTimer);
+                    }
+                };
             }
 
-            return () => {
-                if (refreshTokenTimer) {
-                    window.clearTimeout(refreshTokenTimer);
-                }
-            };
+            refreshTokenManually();
         }
     }, [accessToken, refreshTokenManually, timeBeforeExpiryToResetInMs]);
 };
