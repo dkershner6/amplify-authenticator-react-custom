@@ -4,7 +4,7 @@ import { Auth } from "@aws-amplify/auth";
 import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
-import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "..";
+import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE, useCheckContact } from "..";
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,6 +67,8 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
+    const checkContact = useCheckContact();
+
     const { initialAuthRoute = AuthRoute.SignIn, children } = props;
 
     const [authState, dispatchAuthState] = useReducer(reducer, {
@@ -80,10 +82,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
             try {
                 const user = await Auth.currentAuthenticatedUser();
                 console.debug("user found", user);
-                dispatchAuthState({
-                    authRoute: AuthRoute.SignedIn,
-                    authData: user,
-                });
+                await checkContact(user);
             } catch (error) {
                 dispatchAuthState({
                     authRoute: initialAuthRoute,
@@ -94,17 +93,16 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        const handleAuthCapsule = (capsule: HubCapsule): void => {
+        const handleAuthCapsule = async (
+            capsule: HubCapsule
+        ): Promise<void> => {
             const { payload } = capsule;
 
             switch (payload.event) {
                 case "signIn":
                 case "refreshToken":
                 case "cognitoHostedUI":
-                    return dispatchAuthState({
-                        authRoute: AuthRoute.SignedIn,
-                        authData: payload.data,
-                    });
+                    return await checkContact(payload.data);
                 case "cognitoHostedUI_failure":
                 case "parsingUrl_failure":
                 case "signOut":
@@ -124,7 +122,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         return (): void => {
             Hub.remove("auth", handleAuthCapsule);
         };
-    }, []);
+    }, [checkContact]);
 
     return (
         <AuthStateContext.Provider
