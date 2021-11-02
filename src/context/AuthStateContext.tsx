@@ -1,11 +1,18 @@
-import React, { Context, createContext, useEffect, useReducer } from "react";
+import React, {
+    Context,
+    createContext,
+    useCallback,
+    useEffect,
+    useReducer,
+} from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
-import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE, useCheckContact } from "..";
+import { checkContactBuilder } from "../hooks/useCheckContact";
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
+import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AuthData = any;
@@ -67,8 +74,6 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
     );
 
-    const checkContact = useCheckContact();
-
     const { initialAuthRoute = AuthRoute.SignIn, children } = props;
 
     const [authState, dispatchAuthState] = useReducer(reducer, {
@@ -76,6 +81,11 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         authRoute: AuthRoute.Loading,
         authData: null,
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const checkContact = useCallback(checkContactBuilder(dispatchAuthState), [
+        dispatchAuthState,
+    ]);
 
     useIsomorphicLayoutEffect(() => {
         const checkUser = async (): Promise<void> => {
