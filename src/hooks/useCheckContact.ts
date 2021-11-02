@@ -10,7 +10,6 @@ import {
     AuthState,
 } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
-import { dispatchAuthState } from "../test/TestWrapper";
 
 import { isEmptyObject } from "./utils";
 
