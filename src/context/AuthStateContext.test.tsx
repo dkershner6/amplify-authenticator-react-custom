@@ -39,6 +39,12 @@ describe("AuthStateContext", () => {
 
     it("Should change authRoute to signedIn if a user is present", async () => {
         mocked(Auth.currentAuthenticatedUser).mockResolvedValue("user");
+        mocked(Auth.verifiedContact).mockResolvedValue({
+            verified: {
+                howIsWe: "weAllGood",
+            },
+            unverified: {},
+        });
 
         const { getByText } = render(
             <AuthStateProvider>
