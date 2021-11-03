@@ -110,7 +110,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
 
             switch (payload.event) {
                 case "signIn":
-                case "refreshToken":
+                case "tokenRefresh":
                 case "cognitoHostedUI":
                     return await checkContact(payload.data);
                 case "cognitoHostedUI_failure":
