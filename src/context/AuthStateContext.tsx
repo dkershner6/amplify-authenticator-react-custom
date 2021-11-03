@@ -87,12 +87,16 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         dispatchAuthState,
     ]);
 
+    const getAndSetUser = useCallback(async (): Promise<void> => {
+        const user = await Auth.currentAuthenticatedUser();
+        console.debug("AUTH - user found", user);
+        return await checkContact(user);
+    }, [checkContact]);
+
     useIsomorphicLayoutEffect(() => {
         const checkUser = async (): Promise<void> => {
             try {
-                const user = await Auth.currentAuthenticatedUser();
-                console.debug("user found", user);
-                await checkContact(user);
+                await getAndSetUser();
             } catch (error) {
                 dispatchAuthState({
                     authRoute: initialAuthRoute,
@@ -100,7 +104,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
             }
         };
         checkUser();
-    }, []);
+    }, [getAndSetUser, initialAuthRoute]);
 
     useEffect(() => {
         const handleAuthCapsule = async (
@@ -108,11 +112,14 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         ): Promise<void> => {
             const { payload } = capsule;
 
+            console.debug("AUTH - Hub event detected", payload);
             switch (payload.event) {
                 case "signIn":
-                case "tokenRefresh":
                 case "cognitoHostedUI":
                     return await checkContact(payload.data);
+                case "refreshToken":
+                    // The payload.data is undefined
+                    return await getAndSetUser();
                 case "cognitoHostedUI_failure":
                 case "parsingUrl_failure":
                 case "signOut":
@@ -123,7 +130,6 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
                     });
 
                 default:
-                    //TODO
                     return;
             }
         };
@@ -132,7 +138,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
         return (): void => {
             Hub.remove("auth", handleAuthCapsule);
         };
-    }, [checkContact]);
+    }, [checkContact, getAndSetUser]);
 
     return (
         <AuthStateContext.Provider
