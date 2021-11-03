@@ -117,7 +117,7 @@ export const AuthStateProvider: React.FC<AuthProps> = (props) => {
                 case "signIn":
                 case "cognitoHostedUI":
                     return await checkContact(payload.data);
-                case "refreshToken":
+                case "tokenRefresh":
                     // The payload.data is undefined
                     return await getAndSetUser();
                 case "cognitoHostedUI_failure":
