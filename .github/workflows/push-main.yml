@@ -15,7 +15,7 @@ jobs:
       - name: Node
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.15.0
       - name: Extract version
         id: extract_version
         uses: Saionaro/extract-package-version@v1.0.6
@@ -37,7 +37,7 @@ jobs:
       - name: Node
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.15.0
       - name: Set NPM Publish Token
         uses: filipstefansson/set-npm-token-action@v1
         with:

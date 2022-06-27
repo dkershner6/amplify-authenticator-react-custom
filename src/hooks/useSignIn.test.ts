@@ -1,6 +1,6 @@
 import { Auth } from "@aws-amplify/auth";
-import { renderHook } from "@testing-library/react-hooks";
-import { mocked } from "ts-jest/utils";
+import { renderHook, waitFor } from "@testing-library/react";
+import { mocked } from "jest-mock";
 
 import { useCheckContact } from "..";
 import TestWrapper from "../test/TestWrapper";
@@ -42,7 +42,7 @@ describe("useSignIn", () => {
     });
 
     it("Should call checkContact with correct params", async () => {
-        const { result, waitFor } = renderHook(useSignIn, {
+        const { result } = renderHook(useSignIn, {
             wrapper: TestWrapper,
         });
 

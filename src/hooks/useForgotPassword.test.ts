@@ -1,6 +1,6 @@
 import { Auth } from "@aws-amplify/auth";
-import { renderHook, act } from "@testing-library/react-hooks";
-import { mocked } from "ts-jest/utils";
+import { renderHook, act, waitFor } from "@testing-library/react";
+import { mocked } from "jest-mock";
 
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
@@ -29,7 +29,7 @@ describe("useForgotPassword", () => {
     });
 
     it("Should populate username on send", async () => {
-        const { result, waitFor } = renderHook(useForgotPassword, {
+        const { result } = renderHook(useForgotPassword, {
             wrapper: TestWrapper,
         });
 

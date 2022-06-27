@@ -2,8 +2,8 @@ import React, { ReactElement, useContext } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { Hub } from "@aws-amplify/core";
-import { render, waitFor } from "@testing-library/react";
-import { mocked } from "ts-jest/utils";
+import { act, render, waitFor } from "@testing-library/react";
+import { mocked } from "jest-mock";
 
 import { AuthStateProvider } from "./AuthStateContext";
 
@@ -66,16 +66,18 @@ describe("AuthStateContext", () => {
             </AuthStateProvider>
         );
 
-        await waitFor(() => {
-            expect(hubListenerSpy).toHaveBeenCalledWith(
-                "auth",
-                expect.anything()
-            );
-        });
+        await act(async () => {
+            await waitFor(() => {
+                expect(hubListenerSpy).toHaveBeenCalledWith(
+                    "auth",
+                    expect.anything()
+                );
+            });
 
-        await waitFor(() => {
-            expect(hubListenerSpy).not.toHaveBeenCalledTimes(2);
-            expect(hubRemoveSpy).not.toHaveBeenCalled();
+            await waitFor(() => {
+                expect(hubListenerSpy).not.toHaveBeenCalledTimes(2);
+                expect(hubRemoveSpy).not.toHaveBeenCalled();
+            });
         });
     });
 });
