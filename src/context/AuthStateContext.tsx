@@ -68,7 +68,9 @@ const reducer = (prev: AuthState, newState: Partial<AuthState>): AuthState => {
     };
 };
 
-export const AuthStateProvider: React.FC<AuthProps> = (props) => {
+export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
+    props
+) => {
     invariant(
         Auth && typeof Auth.currentAuthenticatedUser === "function",
         AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE

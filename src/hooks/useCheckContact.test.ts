@@ -1,6 +1,6 @@
 import { Auth } from "@aws-amplify/auth";
-import { renderHook } from "@testing-library/react-hooks";
-import { mocked } from "ts-jest/utils";
+import { renderHook, waitFor } from "@testing-library/react";
+import { mocked } from "jest-mock";
 
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
@@ -37,7 +37,7 @@ describe("useCheckContact", () => {
             verified: {},
             unverified: {},
         });
-        const { result, waitFor } = renderHook(useCheckContact, {
+        const { result } = renderHook(useCheckContact, {
             wrapper: TestWrapper,
         });
 
@@ -58,7 +58,7 @@ describe("useCheckContact", () => {
             },
             unverified: {},
         });
-        const { result, waitFor } = renderHook(useCheckContact, {
+        const { result } = renderHook(useCheckContact, {
             wrapper: TestWrapper,
         });
 

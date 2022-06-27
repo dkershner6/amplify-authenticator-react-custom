@@ -1,6 +1,6 @@
 import { Auth } from "@aws-amplify/auth";
-import { renderHook } from "@testing-library/react-hooks";
-import { mocked } from "ts-jest/utils";
+import { renderHook, waitFor } from "@testing-library/react";
+import { mocked } from "jest-mock";
 
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
@@ -45,7 +45,7 @@ describe("useSignUp", () => {
     });
 
     it("Should route to ConfirmSignUp", async () => {
-        const { result, waitFor } = renderHook(useSignUp, {
+        const { result } = renderHook(useSignUp, {
             wrapper: TestWrapper,
         });
 

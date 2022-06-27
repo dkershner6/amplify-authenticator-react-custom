@@ -15,10 +15,9 @@ export interface AuthenticatorComponents {
     verifyContact?: ReactNode;
 }
 
-export const AuthRouter: React.FC<{ components: AuthenticatorComponents }> = ({
-    children,
-    components,
-}) => {
+export const AuthRouter: React.FC<
+    React.PropsWithChildren<{ components: AuthenticatorComponents }>
+> = ({ children, components }) => {
     const { authRoute } = useContext(AuthStateContext);
 
     switch (authRoute) {

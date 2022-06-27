@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 
 import { AuthRoute, useAuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
