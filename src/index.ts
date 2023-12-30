@@ -1,6 +1,5 @@
-/* istanbul ignore file */
-
-export * from "./components";
-export * from "./context";
-export * from "./hooks";
-export * from "./lib";
+export class Hello {
+  public sayHello() {
+    return 'hello, world!';
+  }
+}
