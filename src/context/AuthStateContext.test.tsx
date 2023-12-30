@@ -1,13 +1,11 @@
-import React, { ReactElement, useContext } from "react";
-
 import { Auth } from "@aws-amplify/auth";
 import { Hub } from "@aws-amplify/core";
-import { act, render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-
-import { AuthStateProvider } from "./AuthStateContext";
+import React, { ReactElement, useContext } from "react";
 
 import { AuthRoute, AuthStateContext } from ".";
+import { AuthStateProvider } from "./AuthStateContext";
 
 jest.mock("@aws-amplify/auth");
 
@@ -24,16 +22,16 @@ describe("AuthStateContext", () => {
 
     it("Should set authRoute to signIn if no user is present", async () => {
         mocked(Auth.currentAuthenticatedUser).mockRejectedValue(
-            "No user throws an error"
+            "No user throws an error",
         );
-        const { getByText } = render(
+        render(
             <AuthStateProvider>
                 <TestComponent />
-            </AuthStateProvider>
+            </AuthStateProvider>,
         );
 
         await waitFor(() => {
-            expect(getByText(AuthRoute.SignIn)).toBeInTheDocument();
+            expect(screen.getByText(AuthRoute.SignIn)).toBeInTheDocument();
         });
     });
 
@@ -46,14 +44,14 @@ describe("AuthStateContext", () => {
             unverified: {},
         });
 
-        const { getByText } = render(
+        render(
             <AuthStateProvider>
                 <TestComponent />
-            </AuthStateProvider>
+            </AuthStateProvider>,
         );
 
         await waitFor(() => {
-            expect(getByText(AuthRoute.SignedIn)).toBeInTheDocument();
+            expect(screen.getByText(AuthRoute.SignedIn)).toBeInTheDocument();
         });
     });
 
@@ -63,21 +61,19 @@ describe("AuthStateContext", () => {
         render(
             <AuthStateProvider>
                 <TestComponent />
-            </AuthStateProvider>
+            </AuthStateProvider>,
         );
 
-        await act(async () => {
-            await waitFor(() => {
-                expect(hubListenerSpy).toHaveBeenCalledWith(
-                    "auth",
-                    expect.anything()
-                );
-            });
-
-            await waitFor(() => {
-                expect(hubListenerSpy).not.toHaveBeenCalledTimes(2);
-                expect(hubRemoveSpy).not.toHaveBeenCalled();
-            });
+        await waitFor(() => {
+            expect(hubListenerSpy).toHaveBeenCalledWith(
+                "auth",
+                expect.anything(),
+            );
         });
+
+        await waitFor(() => {
+            expect(hubListenerSpy).not.toHaveBeenCalledTimes(2);
+        });
+        expect(hubRemoveSpy).not.toHaveBeenCalled();
     });
 });

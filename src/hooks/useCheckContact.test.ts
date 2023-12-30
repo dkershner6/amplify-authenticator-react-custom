@@ -2,10 +2,9 @@ import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
 
+import { useCheckContact } from "./useCheckContact";
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
-
-import { useCheckContact } from "./useCheckContact";
 
 jest.mock("@aws-amplify/auth");
 
@@ -18,7 +17,7 @@ describe("useCheckContact", () => {
         username: "test",
     };
 
-    it("Should call Auth with correct params", () => {
+    it("Should call Auth with correct params", async () => {
         mocked(Auth.verifiedContact).mockResolvedValue({
             verified: {},
             unverified: {},
@@ -27,7 +26,7 @@ describe("useCheckContact", () => {
             wrapper: TestWrapper,
         });
 
-        result.current(testAuthData);
+        await result.current(testAuthData);
 
         expect(mocked(Auth.verifiedContact)).toHaveBeenCalledWith(testAuthData);
     });
@@ -41,7 +40,7 @@ describe("useCheckContact", () => {
             wrapper: TestWrapper,
         });
 
-        result.current(testAuthData);
+        await result.current(testAuthData);
 
         await waitFor(() => {
             expect(dispatchAuthState).toHaveBeenCalledWith({
@@ -62,7 +61,7 @@ describe("useCheckContact", () => {
             wrapper: TestWrapper,
         });
 
-        result.current(testAuthData);
+        await result.current(testAuthData);
 
         await waitFor(() => {
             expect(dispatchAuthState).toHaveBeenCalledWith({

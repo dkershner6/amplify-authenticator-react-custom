@@ -1,7 +1,6 @@
-import { useCallback } from "react";
-
 import { Auth, CognitoUser } from "@aws-amplify/auth";
 import { CognitoUserSession } from "amazon-cognito-identity-js";
+import { useCallback } from "react";
 
 export type UseRefreshTokenOutput = () => Promise<string | null>;
 
@@ -20,7 +19,7 @@ export const useRefreshToken = (): UseRefreshTokenOutput => {
                             if (error) {
                                 console.error(
                                     "Auth - Unable to refresh Token",
-                                    error
+                                    error,
                                 );
                                 resolve(null);
                             }
@@ -28,7 +27,7 @@ export const useRefreshToken = (): UseRefreshTokenOutput => {
                             const jwtToken = accessToken.getJwtToken();
 
                             resolve(jwtToken);
-                        }
+                        },
                     );
                 })
                 .catch((e) => {

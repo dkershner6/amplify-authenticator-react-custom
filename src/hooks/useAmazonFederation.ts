@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
@@ -31,13 +31,13 @@ interface UseAmazonFederationOutput {
 }
 
 export const useAmazonFederation = (
-    props: AmazonFederationProps
+    props: AmazonFederationProps,
 ): UseAmazonFederationOutput => {
     invariant(
         Auth &&
             typeof Auth.federatedSignIn === "function" &&
             typeof Auth.currentAuthenticatedUser === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { clientId, scriptSrc = "https://api-cdn.amazon.com/sdk/login1.js" } =
@@ -81,7 +81,7 @@ export const useAmazonFederation = (
             await Auth.federatedSignIn(
                 "amazon",
                 { token: accessToken, expires_at: expiresAt },
-                user
+                user,
             );
             const authUser = await Auth.currentAuthenticatedUser();
 

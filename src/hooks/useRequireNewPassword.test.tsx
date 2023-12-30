@@ -1,13 +1,11 @@
-import React, { ReactNode, ReactElement } from "react";
-
 import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-
-import { useCheckContact } from "..";
-import TestWrapper from "../test/TestWrapper";
+import React, { ReactNode, ReactElement } from "react";
 
 import { useRequireNewPassword } from "./useRequireNewPassword";
+import { useCheckContact } from "..";
+import TestWrapper from "../test/TestWrapper";
 
 jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");
@@ -33,7 +31,7 @@ describe("useRequireNewPassword", () => {
 
     beforeAll(() => {
         mocked(Auth.completeNewPassword).mockResolvedValue(
-            completeNewPasswordResponse
+            completeNewPasswordResponse,
         );
         mocked(useCheckContact).mockReturnValue(checkContact);
     });
@@ -42,17 +40,17 @@ describe("useRequireNewPassword", () => {
         jest.clearAllMocks();
     });
 
-    it("Should call Auth with correct params", () => {
+    it("Should call Auth with correct params", async () => {
         const { result } = renderHook(useRequireNewPassword, {
             wrapper: CustomTestWrapper,
         });
 
-        result.current(testPassword);
+        await result.current(testPassword);
 
         expect(mocked(Auth.completeNewPassword)).toHaveBeenCalledWith(
             testAuthData,
             testPassword,
-            undefined
+            undefined,
         );
     });
 
@@ -61,11 +59,11 @@ describe("useRequireNewPassword", () => {
             wrapper: CustomTestWrapper,
         });
 
-        result.current(testPassword);
+        await result.current(testPassword);
 
         await waitFor(() => {
             expect(checkContact).toHaveBeenCalledWith(
-                completeNewPasswordResponse
+                completeNewPasswordResponse,
             );
         });
     });

@@ -2,10 +2,9 @@
 
 import React from "react";
 
+import { AuthenticatorComponents, AuthRouter } from "./AuthRouter";
 import { useAutoRefreshToken } from "..";
 import { AuthStateProvider, AuthProps } from "../context/AuthStateContext";
-
-import { AuthenticatorComponents, AuthRouter } from "./AuthRouter";
 
 export interface AuthenticatorProps {
     authProps?: AuthProps;

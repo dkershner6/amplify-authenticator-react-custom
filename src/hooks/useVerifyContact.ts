@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext, useState } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
@@ -16,7 +16,7 @@ export const useVerifyContact = (): UseVerifyContactOutput => {
     invariant(
         (Auth && typeof Auth.verifyCurrentUserAttribute === "function") ||
             typeof Auth.verifyCurrentUserAttributeSubmit === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { dispatchAuthState, authData } = useContext(AuthStateContext);

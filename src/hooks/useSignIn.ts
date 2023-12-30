@@ -1,28 +1,27 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
+import { useCheckContact } from "./useCheckContact";
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AmplifyError } from "../lib/AmplifyError";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
-import { useCheckContact } from "./useCheckContact";
-
 export type UseSignInOuput = (
     username: string,
     password: string,
-    validationData?: Record<string, string> | undefined
+    validationData?: Record<string, string> | undefined,
 ) => Promise<void>;
 
 export const useSignIn = (): ((
     username: string,
     password: string,
-    validationData?: Record<string, string>
+    validationData?: Record<string, string>,
 ) => Promise<void>) => {
     invariant(
         Auth && typeof Auth.signIn === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { dispatchAuthState } = useContext(AuthStateContext);
@@ -33,7 +32,7 @@ export const useSignIn = (): ((
         password: string,
         validationData?: {
             [key: string]: string;
-        }
+        },
     ): Promise<void> => {
         try {
             const user = await Auth.signIn({
@@ -64,7 +63,7 @@ export const useSignIn = (): ((
                     authData: user,
                 });
             } else {
-                checkContact(user);
+                await checkContact(user);
             }
         } catch (error) {
             if ((error as AmplifyError)?.code === "UserNotConfirmedException") {

@@ -1,21 +1,20 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
+import { useCheckContact } from "./useCheckContact";
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
-
-import { useCheckContact } from "./useCheckContact";
 
 export type UseRequireNewPasswordOutput = (password: string) => Promise<void>;
 
 export const useRequireNewPassword = (): ((
-    password: string
+    password: string,
 ) => Promise<void>) => {
     invariant(
         Auth && typeof Auth.completeNewPassword === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { authData: user, dispatchAuthState } = useContext(AuthStateContext);
@@ -26,7 +25,7 @@ export const useRequireNewPassword = (): ((
             const updatedUser = await Auth.completeNewPassword(
                 user,
                 password,
-                undefined
+                undefined,
             );
 
             console.debug("complete new password", updatedUser);
@@ -43,7 +42,7 @@ export const useRequireNewPassword = (): ((
                     authData: updatedUser,
                 });
             } else {
-                checkContact(updatedUser);
+                await checkContact(updatedUser);
             }
         } catch (error) {
             console.error(error);

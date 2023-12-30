@@ -1,13 +1,11 @@
-import React, { ReactElement, ReactNode } from "react";
-
 import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-
-import { AuthRoute } from "..";
-import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
+import React, { ReactElement, ReactNode } from "react";
 
 import { useConfirmSignUp } from "./useConfirmSignUp";
+import { AuthRoute } from "..";
+import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
 
 jest.mock("@aws-amplify/auth");
 
@@ -29,16 +27,16 @@ describe("useConfirmSignUp", () => {
         jest.clearAllMocks();
     });
 
-    it("Should call Auth with correct params", () => {
+    it("Should call Auth with correct params", async () => {
         const { result } = renderHook(useConfirmSignUp, {
             wrapper: CustomTestWrapper,
         });
 
-        result.current.confirm(testCode);
+        await result.current.confirm(testCode);
 
         expect(mocked(Auth.confirmSignUp)).toHaveBeenCalledWith(
             testAuthData.username,
-            testCode
+            testCode,
         );
     });
 
@@ -47,7 +45,7 @@ describe("useConfirmSignUp", () => {
             wrapper: CustomTestWrapper,
         });
 
-        result.current.confirm(testCode);
+        await result.current.confirm(testCode);
 
         await waitFor(() => {
             expect(dispatchAuthState).toHaveBeenCalledWith({
@@ -57,15 +55,15 @@ describe("useConfirmSignUp", () => {
         });
     });
 
-    it("Should resend on command", () => {
+    it("Should resend on command", async () => {
         const { result } = renderHook(useConfirmSignUp, {
             wrapper: CustomTestWrapper,
         });
 
-        result.current.resend();
+        await result.current.resend();
 
         expect(mocked(Auth.resendSignUp)).toHaveBeenCalledWith(
-            testAuthData.username
+            testAuthData.username,
         );
     });
 });

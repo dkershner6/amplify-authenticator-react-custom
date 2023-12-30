@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useState, useEffect, useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext } from "../context/AuthStateContext";
@@ -17,7 +17,7 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
             typeof Auth.setupTOTP === "function" &&
             typeof Auth.verifyTotpToken === "function" &&
             typeof Auth.setPreferredMFA === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const [code, setCode] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
     const verifyTotpToken = async (totpCode: string): Promise<void> => {
         try {
             await Auth.verifyTotpToken(authData, totpCode);
-            Auth.setPreferredMFA(authData, "TOTP");
+            await Auth.setPreferredMFA(authData, "TOTP");
         } catch (error) {
             console.error(error);
             throw error;
@@ -40,10 +40,10 @@ export const useTOTPSetup = (): UseTOTPSetupOutput => {
             console.debug("secret key", data);
 
             setCode(
-                `otpauth://totp/AWSCognito:${authData.username}?secret=${data}&issuer=AWSCognito`
+                `otpauth://totp/AWSCognito:${authData.username}?secret=${data}&issuer=AWSCognito`,
             );
         };
-        setup();
+        void setup();
     }, [authData]);
 
     return { code, verifyTotpToken };

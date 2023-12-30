@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext, useState } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
@@ -16,7 +16,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
     invariant(
         (Auth && typeof Auth.forgotPassword === "function") ||
             typeof Auth.forgotPasswordSubmit === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const [username, setUsername] = useState<string | null>(null);
@@ -26,7 +26,7 @@ export const useForgotPassword = (): UseForgotPasswordOutput => {
     const submit = async (code: string, password: string): Promise<void> => {
         if (!username) {
             throw new Error(
-                "username must be populated before submitting a forgotten password code"
+                "username must be populated before submitting a forgotten password code",
             );
         }
 

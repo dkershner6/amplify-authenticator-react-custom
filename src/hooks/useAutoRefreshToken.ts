@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
-import { useRefreshToken } from "./useRefreshToken";
-
 import { useSignedInAuthData } from ".";
+import { useRefreshToken } from "./useRefreshToken";
 
 export interface UseAuthRefreshTokenOptions {
     /** Set to -1 to disable */
@@ -10,7 +9,7 @@ export interface UseAuthRefreshTokenOptions {
 }
 
 export const useAutoRefreshToken = (
-    options?: UseAuthRefreshTokenOptions
+    options?: UseAuthRefreshTokenOptions,
 ): void => {
     const { timeBeforeExpiryToResetInMs = 600000 } = options ?? {};
 
@@ -28,18 +27,18 @@ export const useAutoRefreshToken = (
 
             const msUntilRefreshTime = Math.max(
                 expiresAtInEpochMs - timeBeforeExpiryToResetInMs - nowInEpochMs,
-                0
+                0,
             );
 
             if (msUntilRefreshTime > 0) {
                 console.debug(
                     `Auth - Setting timer to refresh token in ${
                         Math.round((msUntilRefreshTime / 1000 / 60) * 100) / 100
-                    } minutes`
+                    } minutes`,
                 );
                 const refreshTokenTimer = window.setTimeout(
                     () => refreshTokenManually(),
-                    msUntilRefreshTime
+                    msUntilRefreshTime,
                 );
 
                 return () => {
@@ -49,7 +48,9 @@ export const useAutoRefreshToken = (
                 };
             }
 
-            refreshTokenManually();
+            void refreshTokenManually();
         }
+
+        return;
     }, [accessToken, refreshTokenManually, timeBeforeExpiryToResetInMs]);
 };

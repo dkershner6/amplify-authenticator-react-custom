@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
@@ -15,7 +15,7 @@ export const useConfirmSignUp = (): UseConfirmSignUpOutput => {
     invariant(
         (Auth && typeof Auth.confirmSignUp === "function") ||
             typeof Auth.resendSignUp === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { dispatchAuthState, authData = {} } = useContext(AuthStateContext);

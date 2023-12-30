@@ -1,8 +1,9 @@
+import { Auth } from "@aws-amplify/auth";
 import { useCallback, useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
+import { isEmptyObject } from "./utils";
 import {
     AuthStateContext,
     AuthData,
@@ -11,8 +12,6 @@ import {
 } from "../context/AuthStateContext";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
 
-import { isEmptyObject } from "./utils";
-
 export type UseCheckContactOutput = (authData: AuthData) => Promise<void>;
 
 export const checkContactBuilder =
@@ -20,7 +19,7 @@ export const checkContactBuilder =
     async (authData: AuthData): Promise<void> => {
         invariant(
             Auth && typeof Auth.verifiedContact === "function",
-            AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+            AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
         );
 
         const data = await Auth.verifiedContact(authData);

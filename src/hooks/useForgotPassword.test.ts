@@ -2,10 +2,9 @@ import { Auth } from "@aws-amplify/auth";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
 
+import { useForgotPassword } from "./useForgotPassword";
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
-
-import { useForgotPassword } from "./useForgotPassword";
 
 jest.mock("@aws-amplify/auth");
 
@@ -52,7 +51,7 @@ describe("useForgotPassword", () => {
         expect(mocked(Auth.forgotPasswordSubmit)).toHaveBeenCalledWith(
             testUsername,
             testCode,
-            testPassword
+            testPassword,
         );
     });
 

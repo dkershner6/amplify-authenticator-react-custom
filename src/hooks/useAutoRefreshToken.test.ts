@@ -18,7 +18,7 @@ jest.mock("./useSignedInAuthData", () => ({
 describe("useAutoRefreshToken", () => {
     beforeAll(() => {
         jest.spyOn(refreshTokenModule, "useRefreshToken").mockImplementation(
-            () => mockRefreshToken
+            () => mockRefreshToken,
         );
     });
 

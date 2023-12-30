@@ -1,3 +1,5 @@
+import { Auth } from "@aws-amplify/auth";
+import { HubCapsule, Hub } from "@aws-amplify/core";
 import React, {
     Context,
     createContext,
@@ -5,9 +7,6 @@ import React, {
     useEffect,
     useReducer,
 } from "react";
-
-import { Auth } from "@aws-amplify/auth";
-import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { checkContactBuilder } from "../hooks/useCheckContact";
@@ -50,7 +49,7 @@ function createNamedContext<T>(name: string, defaultValue: T): Context<T> {
 
 export const AuthStateContext = createNamedContext<AuthStateContextOutput>(
     "Auth",
-    undefined as unknown as AuthStateContextOutput
+    undefined as unknown as AuthStateContextOutput,
 );
 
 export interface AuthProps {
@@ -69,11 +68,11 @@ const reducer = (prev: AuthState, newState: Partial<AuthState>): AuthState => {
 };
 
 export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
-    props
+    props,
 ) => {
     invariant(
         Auth && typeof Auth.currentAuthenticatedUser === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { initialAuthRoute = AuthRoute.SignIn, children } = props;
@@ -92,7 +91,7 @@ export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
     const getAndSetUser = useCallback(async (): Promise<void> => {
         const user = await Auth.currentAuthenticatedUser();
         console.debug("AUTH - user found", user);
-        return await checkContact(user);
+        return checkContact(user);
     }, [checkContact]);
 
     useIsomorphicLayoutEffect(() => {
@@ -105,12 +104,12 @@ export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
                 });
             }
         };
-        checkUser();
+        void checkUser();
     }, [getAndSetUser, initialAuthRoute]);
 
     useEffect(() => {
         const handleAuthCapsule = async (
-            capsule: HubCapsule
+            capsule: HubCapsule,
         ): Promise<void> => {
             const { payload } = capsule;
 
@@ -118,10 +117,10 @@ export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
             switch (payload.event) {
                 case "signIn":
                 case "cognitoHostedUI":
-                    return await checkContact(payload.data);
+                    return checkContact(payload.data);
                 case "tokenRefresh":
                     // The payload.data is undefined
-                    return await getAndSetUser();
+                    return getAndSetUser();
                 case "cognitoHostedUI_failure":
                 case "parsingUrl_failure":
                 case "signOut":

@@ -1,7 +1,6 @@
-import { useContext } from "react";
-
 import { Auth } from "@aws-amplify/auth";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { useContext } from "react";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
@@ -11,13 +10,13 @@ export type UseSignUpOutput = (
     username: string,
     password: string,
     validationData?: Record<string, string>,
-    attributes?: Record<string, string>
+    attributes?: Record<string, string>,
 ) => Promise<void>;
 
 export const useSignUp = (): UseSignUpOutput => {
     invariant(
         Auth && typeof Auth.signUp === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { dispatchAuthState } = useContext(AuthStateContext);
@@ -26,7 +25,7 @@ export const useSignUp = (): UseSignUpOutput => {
         username: string,
         password: string,
         validationData?: Record<string, string>,
-        attributes?: Record<string, string>
+        attributes?: Record<string, string>,
     ): Promise<void> => {
         const validationDataArray: CognitoUserAttribute[] = [];
 
@@ -36,7 +35,7 @@ export const useSignUp = (): UseSignUpOutput => {
                     new CognitoUserAttribute({
                         Name: name,
                         Value: value,
-                    })
+                    }),
                 );
             }
         }

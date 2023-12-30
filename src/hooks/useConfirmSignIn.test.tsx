@@ -1,14 +1,12 @@
-import React, { ReactElement, ReactNode } from "react";
-
 import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-
-import TestWrapper from "../test/TestWrapper";
-
-import { useConfirmSignIn } from "./useConfirmSignIn";
+import React, { ReactElement, ReactNode } from "react";
 
 import { useCheckContact } from ".";
+import { useConfirmSignIn } from "./useConfirmSignIn";
+
+import TestWrapper from "../test/TestWrapper";
 
 jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");
@@ -36,17 +34,17 @@ describe("useConfirmSignIn", () => {
         jest.clearAllMocks();
     });
 
-    it("Should call Auth with correct params", () => {
+    it("Should call Auth with correct params", async () => {
         const { result } = renderHook(useConfirmSignIn, {
             wrapper: CustomTestWrapper,
         });
 
-        result.current.confirm(testCode);
+        await result.current.confirm(testCode);
 
         expect(mocked(Auth.confirmSignIn)).toHaveBeenCalledWith(
             testAuthData,
             testCode,
-            null
+            null,
         );
     });
 
@@ -55,7 +53,7 @@ describe("useConfirmSignIn", () => {
             wrapper: CustomTestWrapper,
         });
 
-        result.current.confirm(testCode);
+        await result.current.confirm(testCode);
 
         await waitFor(() => {
             expect(checkContact).toHaveBeenCalledWith(testAuthData);

@@ -2,10 +2,9 @@ import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
 
+import { useSignIn } from "./useSignIn";
 import { useCheckContact } from "..";
 import TestWrapper from "../test/TestWrapper";
-
-import { useSignIn } from "./useSignIn";
 
 jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");
@@ -27,12 +26,12 @@ describe("useSignIn", () => {
     const testUsername = "test";
     const testPassword = "P@ssw0rd";
 
-    it("Should call Auth with correct params", () => {
+    it("Should call Auth with correct params", async () => {
         const { result } = renderHook(useSignIn, {
             wrapper: TestWrapper,
         });
 
-        result.current(testUsername, testPassword);
+        await result.current(testUsername, testPassword);
 
         expect(mocked(Auth.signIn)).toHaveBeenCalledWith({
             username: testUsername,
@@ -46,7 +45,7 @@ describe("useSignIn", () => {
             wrapper: TestWrapper,
         });
 
-        result.current(testUsername, testPassword);
+        await result.current(testUsername, testPassword);
 
         await waitFor(() => {
             expect(checkContact).toHaveBeenCalledWith(signInResponse);

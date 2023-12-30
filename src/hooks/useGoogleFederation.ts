@@ -1,6 +1,6 @@
+import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
-import { Auth } from "@aws-amplify/auth";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
@@ -29,13 +29,13 @@ export interface UseGoogleFederationOutput {
 }
 
 export const useGoogleFederation = (
-    props: GoogleFederationProps
+    props: GoogleFederationProps,
 ): UseGoogleFederationOutput => {
     invariant(
         Auth &&
             typeof Auth.federatedSignIn === "function" &&
             typeof Auth.currentAuthenticatedUser === "function",
-        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE
+        AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE,
     );
 
     const { clientId, scriptSrc = "https://apis.google.com/js/platform.js" } =
@@ -75,7 +75,7 @@ export const useGoogleFederation = (
         await Auth.federatedSignIn(
             "google",
             { token: idToken, expires_at: expiresAt },
-            user
+            user,
         );
 
         const authUser = await Auth.currentAuthenticatedUser();
