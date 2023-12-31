@@ -64,6 +64,10 @@
       "type": "build"
     },
     {
+      "name": "dkershner6-projen-react",
+      "type": "build"
+    },
+    {
       "name": "eslint-config-prettier",
       "type": "build"
     },
