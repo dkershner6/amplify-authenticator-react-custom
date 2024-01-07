@@ -23,6 +23,10 @@
       "type": "build"
     },
     {
+      "name": "@types/clone-deep",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -52,6 +56,10 @@
     {
       "name": "amazon-cognito-identity-js",
       "version": "5",
+      "type": "build"
+    },
+    {
+      "name": "clone-deep",
       "type": "build"
     },
     {

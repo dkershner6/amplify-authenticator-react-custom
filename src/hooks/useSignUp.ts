@@ -1,6 +1,7 @@
+import { useContext } from "react";
+
 import { Auth } from "@aws-amplify/auth";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { useContext } from "react";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";

@@ -1,11 +1,13 @@
+import React, { ReactElement, useContext } from "react";
+
 import { Auth } from "@aws-amplify/auth";
 import { Hub } from "@aws-amplify/core";
 import { render, screen, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-import React, { ReactElement, useContext } from "react";
+
+import { AuthStateProvider } from "./AuthStateContext";
 
 import { AuthRoute, AuthStateContext } from ".";
-import { AuthStateProvider } from "./AuthStateContext";
 
 jest.mock("@aws-amplify/auth");
 

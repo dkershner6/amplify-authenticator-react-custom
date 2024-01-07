@@ -1,11 +1,13 @@
+import React, { ReactNode, ReactElement } from "react";
+
 import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-import React, { ReactNode, ReactElement } from "react";
 
-import { useRequireNewPassword } from "./useRequireNewPassword";
 import { useCheckContact } from "..";
 import TestWrapper from "../test/TestWrapper";
+
+import { useRequireNewPassword } from "./useRequireNewPassword";
 
 jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");

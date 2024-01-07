@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
-import { useSignedInAuthData } from ".";
 import { useRefreshToken } from "./useRefreshToken";
+
+import { useSignedInAuthData } from ".";
 
 export interface UseAuthRefreshTokenOptions {
     /** Set to -1 to disable */

@@ -1,12 +1,14 @@
+import React, { ReactElement, ReactNode } from "react";
+
 import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
-import React, { ReactElement, ReactNode } from "react";
-
-import { useCheckContact } from ".";
-import { useConfirmSignIn } from "./useConfirmSignIn";
 
 import TestWrapper from "../test/TestWrapper";
+
+import { useConfirmSignIn } from "./useConfirmSignIn";
+
+import { useCheckContact } from ".";
 
 jest.mock("@aws-amplify/auth");
 jest.mock("./useCheckContact");

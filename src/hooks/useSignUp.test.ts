@@ -2,9 +2,10 @@ import { Auth } from "@aws-amplify/auth";
 import { renderHook, waitFor } from "@testing-library/react";
 import { mocked } from "jest-mock";
 
-import { useSignUp } from "./useSignUp";
 import { AuthRoute } from "..";
 import TestWrapper, { dispatchAuthState } from "../test/TestWrapper";
+
+import { useSignUp } from "./useSignUp";
 
 jest.mock("@aws-amplify/auth");
 

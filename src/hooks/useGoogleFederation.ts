@@ -1,6 +1,6 @@
-import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
+import { Auth } from "@aws-amplify/auth";
 import useScript from "react-script-hook";
 import invariant from "tiny-invariant";
 
