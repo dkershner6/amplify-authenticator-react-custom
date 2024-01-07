@@ -1,12 +1,13 @@
-import { Auth } from "@aws-amplify/auth";
 import { useContext } from "react";
 
+import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
-import { useCheckContact } from "./useCheckContact";
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";
 import { AmplifyError } from "../lib/AmplifyError";
 import { AMPLIFY_AUTH_NOT_INSTALLED_ERROR_MESSAGE } from "../lib/error";
+
+import { useCheckContact } from "./useCheckContact";
 
 export type UseSignInOuput = (
     username: string,

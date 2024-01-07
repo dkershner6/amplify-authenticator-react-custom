@@ -1,6 +1,6 @@
-import { Auth } from "@aws-amplify/auth";
 import { useContext, useState } from "react";
 
+import { Auth } from "@aws-amplify/auth";
 import invariant from "tiny-invariant";
 
 import { AuthStateContext, AuthRoute } from "../context/AuthStateContext";

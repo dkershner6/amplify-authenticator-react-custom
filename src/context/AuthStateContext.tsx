@@ -1,5 +1,3 @@
-import { Auth } from "@aws-amplify/auth";
-import { HubCapsule, Hub } from "@aws-amplify/core";
 import React, {
     Context,
     createContext,
@@ -7,6 +5,9 @@ import React, {
     useEffect,
     useReducer,
 } from "react";
+
+import { Auth } from "@aws-amplify/auth";
+import { HubCapsule, Hub } from "@aws-amplify/core";
 import invariant from "tiny-invariant";
 
 import { checkContactBuilder } from "../hooks/useCheckContact";
