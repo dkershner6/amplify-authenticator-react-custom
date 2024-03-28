@@ -92,7 +92,7 @@ export const useGoogleFederation = (
 
         const googleUser = await ga.signIn();
 
-        return federatedSignIn(googleUser);
+        return await federatedSignIn(googleUser);
     };
 
     const signOut = async (): Promise<void> => {
@@ -105,7 +105,7 @@ export const useGoogleFederation = (
 
         if (!googleAuth) {
             console.debug("google Auth undefined");
-            return Promise.resolve();
+            return await Promise.resolve();
         }
 
         console.debug("google signing out");
