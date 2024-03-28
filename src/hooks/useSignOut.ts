@@ -9,5 +9,5 @@ export const useSignOut = (global = false): UseSignOutOutput => {
         "No Auth module found, please ensure @aws-amplify/auth is imported",
     );
 
-    return async (): Promise<void> => Auth.signOut({ global });
+    return async (): Promise<void> => await Auth.signOut({ global });
 };

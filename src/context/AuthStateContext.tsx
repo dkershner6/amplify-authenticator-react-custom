@@ -92,7 +92,7 @@ export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
     const getAndSetUser = useCallback(async (): Promise<void> => {
         const user = await Auth.currentAuthenticatedUser();
         console.debug("AUTH - user found", user);
-        return checkContact(user);
+        return await checkContact(user);
     }, [checkContact]);
 
     useIsomorphicLayoutEffect(() => {
@@ -118,10 +118,10 @@ export const AuthStateProvider: React.FC<React.PropsWithChildren<AuthProps>> = (
             switch (payload.event) {
                 case "signIn":
                 case "cognitoHostedUI":
-                    return checkContact(payload.data);
+                    return await checkContact(payload.data);
                 case "tokenRefresh":
                     // The payload.data is undefined
-                    return getAndSetUser();
+                    return await getAndSetUser();
                 case "cognitoHostedUI_failure":
                 case "parsingUrl_failure":
                 case "signOut":
