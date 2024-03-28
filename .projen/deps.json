@@ -31,8 +31,12 @@
       "type": "build"
     },
     {
+      "name": "@types/jest-axe",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
-      "version": "^18",
+      "version": "^20",
       "type": "build"
     },
     {
@@ -64,7 +68,7 @@
     },
     {
       "name": "constructs",
-      "version": "^10.0.0",
+      "version": "^10.3.0",
       "type": "build"
     },
     {
@@ -150,11 +154,12 @@
       "type": "build"
     },
     {
-      "name": "projen",
+      "name": "projen-nvm",
       "type": "build"
     },
     {
-      "name": "projen-nvm",
+      "name": "projen",
+      "version": "^0.80.10",
       "type": "build"
     },
     {
